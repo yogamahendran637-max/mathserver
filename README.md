@@ -28,8 +28,100 @@ Create a HTML file to implement form based input and output.
 ## Step 6:
 Publish the website in the given URL.
 
+
 # PROGRAM :
+```
+math.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Power Calculator</title>
+</head>
+<style>
+    h2{
+        background-color: bisque;
+    }
+    h3{
+        background-color: aquamarine;
+    }
+    label{
+        background-color: aquamarine;
+    }
+    h3{
+        background-color:grey;
+    }
+    body{
+        background-color: cornflowerblue;
+    }
+</style>
+<body>
+  <h2>Incandescent Bulb Power Calculator</h2>
+
+  <label>Intensity (I) in amperes:</label><br>
+  <input type="number" id="intensity"><br><br>
+
+  <label>Resistance (R) in ohms:</label><br>
+  <input type="number" id="resistance"><br><br>
+
+  <button onclick="calculatePower()">Calculate Power</button>
+
+  <h3 id="result"></h3>
+
+  <script>
+    function calculatePower() {
+      var I = parseFloat(document.getElementById("intensity").value);
+      var R = parseFloat(document.getElementById("resistance").value);
+
+      if (!isNaN(I) && !isNaN(R)) {
+        var P = I * I * R;
+        document.getElementById("result").innerText = "Power (P) = " + P.toFixed(2) + " watts";
+      } else {
+        document.getElementById("result").innerText = "Please enter both values.";
+      }
+    }
+  </script>
+</body>
+</html>
+
+urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.calculator, name='calculator'),
+]
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('mathapp.urls')),  
+]
+
+views.py
+from django.shortcuts import render
+
+def calculator(request):
+    power = None
+
+    if request.method == 'POST':
+        try:
+            intensity = float(request.POST.get('intensity'))
+            resistance = float(request.POST.get('resistance'))
+            power = round(intensity ** 2 * resistance, 2)
+        except (TypeError, ValueError):
+            power = "Invalid input. Please enter numeric values."
+
+    return render(request, 'math.html', {'power': power})
+
+```
+
 # SERVER SIDE PROCESSING:
 # HOMEPAGE:
+<img width="1920" height="1080" alt="Screenshot (26)" src="https://github.com/user-attachments/assets/5b76d2e5-2fe6-4b67-9c31-bd18d49993a6" />
+<img width="1920" height="1080" alt="Screenshot (26) - Copy" src="https://github.com/user-attachments/assets/2674441b-650d-4a8c-ab6f-7df7ce815885" />
+
+
 # RESULT:
 The program for performing server side processing is completed successfully.
